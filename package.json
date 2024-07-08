@@ -1,0 +1,22 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "SET ENVI=dev&  nodemon app.js",
+    "prod": "SET ENVI=prod&  nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.16.1",
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.16.1"
+  }
+}
