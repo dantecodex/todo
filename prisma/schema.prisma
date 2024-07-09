@@ -19,7 +19,7 @@ model Tasks {
 
 model subTasks {
   id           Int       @id @default(autoincrement())
-  description  String    @db.VarChar(255)
+  description  String
   completed    Boolean   @default(false)
   completed_at DateTime?
   created_at   DateTime  @default(now())

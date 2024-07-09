@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { prisma } from '../app.js'
-import CustomError from '../utils/customErrorHandler.js'
-import asyncErrorHandler from "../utils/asyncErrorHandler.js"
-import { userLoginDataValidation, userSignUpDataValidation } from '../utils/validation.js'
+import prisma from '../../prisma/prismaSetup.js'
+import CustomError from '../../utils/customErrorHandler.js'
+import asyncErrorHandler from "../../utils/asyncErrorHandler.js"
+import { userLoginDataValidation, userSignUpDataValidation } from '../../request/auth/authDataValidation.js'
 
 
 
@@ -21,16 +21,16 @@ const comparePasswordInDB = async (enteredPassword, userPassword) => {
 const signup = asyncErrorHandler(async (req, res) => {
     const { error, value } = userSignUpDataValidation.validate(req.body)
     if (error) {
-        throw error
+        throw new CustomError(error.message, 400)
     }
     value.password = await bcrypt.hash(value?.password, 12)
 
-    const user = await prisma.Users.create({
+    const user = await prisma.users.create({
         data: value
     })
 
     if (!user) {
-        throw new CustomError("Unable to create User", 400)
+        throw new CustomError("Unable to create User", 500)
     }
 
     const token = generateToken(user.id, user.username)
@@ -40,7 +40,7 @@ const signup = asyncErrorHandler(async (req, res) => {
 const login = asyncErrorHandler(async (req, res) => {
     const { error, value } = userLoginDataValidation.validate(req.body)
     if (error) {
-        throw error
+        throw new CustomError(error.message, 400)
     }
 
     const user = await prisma.users.findUnique({
